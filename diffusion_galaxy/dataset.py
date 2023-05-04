@@ -1,3 +1,4 @@
+from matplotlib.image import imread
 from torchvision import datasets, transforms
 import torch
 
