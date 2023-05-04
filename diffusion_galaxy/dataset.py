@@ -30,5 +30,4 @@ def custom_loader_16bit(path):
     with open(path, 'rb') as f:
         img = imread(f)
         img = transforms.ToTensor()(img)
-        img = img.type(torch.float32) / 65535.0
         return img
