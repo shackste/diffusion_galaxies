@@ -284,11 +284,3 @@ class UNet_conditional(nn.Module):
         x = self.sa6(x)
         output = self.outc(x)
         return output
-
-
-
-    class LinearLayer():
-        """Linear layer with equalized learning rate and custom learning rate multiplier written in numpy."""
-
-            def __init__(self, input_size, output_size, gain=2 ** 0.5, use_wscale=False, lrmul=1):
-                he_std = gain * input_size ** -0.5  # He init   
