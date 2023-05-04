@@ -20,19 +20,19 @@ args.device = "cuda"
 args.lr = 3e-4
 args.num_classes = 0
 
-from unet import UNet_conditional
+from unet import UNet
 from update_parameters import EMA
 from diffusion import Diffusion_cond
 from dataset import create_pytorch_dataloader
 from evaluate import psnr
 
-root = "~/PycharmProjects/diffusion/"
+root = "~/diffusion_galaxies/"
 path_to_images = root+"data_strong_lenses"
 batch_size = 64
 loader = create_pytorch_dataloader(path_to_images, args.image_size, batch_size=args.batch_size, shuffle=True, num_workers=4)
 
 device = args.device
-unet = UNet_conditional(num_classes=args.num_classes, image_size=int(64)).to(device)
+unet = UNet(image_size=int(64)).to(device)
 optimizer = optim.AdamW(unet.parameters(), lr=args.lr)
 diffusion = Diffusion_cond(img_size=args.image_size, device=device)
 ema = EMA(0.995)
@@ -73,7 +73,7 @@ def predict_noise(images, labels, p=0.0):
     x_t, noise = diffusion.noise_images(images, t)
     if np.random.random() < p:
         labels = None
-    predicted_noise = unet(x_t, t, labels)
+    predicted_noise = unet(x_t, t)
     return predicted_noise, noise
 
 @torch.no_grad()
