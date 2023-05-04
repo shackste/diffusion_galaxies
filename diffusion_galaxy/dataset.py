@@ -11,7 +11,7 @@ def create_pytorch_dataset(path_to_images, image_size, custom_loader=None):
         transforms.Normalize(mean=[0.5], std=[0.5])
 
     ])
-    dataset = datasets.ImageFolder(path_to_images, transform, costum_loader=custom_loader)
+    dataset = datasets.ImageFolder(path_to_images, transform, custom_loader=custom_loader)
     return dataset
 
 
