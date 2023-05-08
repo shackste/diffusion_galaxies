@@ -24,10 +24,3 @@ def create_pytorch_dataloader(path_to_images, image_size, batch_size=64, shuffle
     dataset = create_pytorch_dataset(path_to_images, image_size, custom_loader=custom_loader)
     dataloader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
     return dataloader
-
-
-def custom_loader_16bit(path):
-    with open(path, 'rb') as f:
-        img = imread(f)
-        img = transforms.ToTensor()(img)
-        return img

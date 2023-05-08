@@ -201,7 +201,7 @@ class Up(nn.Module):
 class UNet_conditional(nn.Module):
     def __init__(self, c_in=1, c_out=1, time_dim=256, num_classes=None, device='cuda', image_size=64):
         """
-        It takes in input channel input and channel output, which by defualt are 3 because
+        It takes in input channel input and channel output, which by default are 3 because
         we work with RGB images, but you can use 1 for BW
 
         time_dim = dimension of timestep embedding

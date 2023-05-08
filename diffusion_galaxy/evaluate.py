@@ -1,5 +1,6 @@
 import torch
 
+mse = torch.nn.MSELoss()
 def psnr(input: torch.Tensor, target: torch.Tensor, max_val: float) -> torch.Tensor:
     r"""Create a function that calculates the PSNR between 2 images.
 
