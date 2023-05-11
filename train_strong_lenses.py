@@ -88,7 +88,7 @@ def training(epochs, steps_eval=1):
         psnr_val, mse_val = evaluate(epoch, plot=plot)
         losses["psnr"].append(psnr_val)
         losses["mse"].append(mse_val)
-        torch.save(unet.state_dict(), f"unet_{run_name}.pt")
+        torch.save(unet.state_dict(), f"{result_dir}unet_{run_name}.pt")
         if not (epoch+1) % lr_step_epochs:
             global lr
             global optimizer
@@ -135,7 +135,7 @@ def evaluate(epoch, plot=False):
         mse_val += mse(predicted_noise, noise)
     if plot:
         images = diffusion.sample(unet, 16, None, cfg_scale=0)
-#        save_images(images, f"epoch {epoch}", f"generated_images{run_name}_{epoch}.png")
+#        save_images(images, f"epoch {epoch}", f"{result_dir}generated_images{run_name}_{epoch}.png")
         if log_wandb:
     #        images = (255*(images+1)/2).to(torch.uint8)
             # create a grid of images
