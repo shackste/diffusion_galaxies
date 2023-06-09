@@ -3,8 +3,14 @@ import torch.nn as nn
 from torch.nn import functional as F
 
 
+activation_functions = {
+    'tanh': nn.Tanh,
+    'sigmoid': nn.Sigmoid,
+    None: Identity,
+}
+
 class UNet(nn.Module):
-    def __init__(self, c_in=1, c_out=1, time_dim=256, device='cuda', image_size=64):
+    def __init__(self, c_in=1, c_out=1, time_dim=256, device='cuda', image_size=64, attention=True, activation=None):
         """
         It takes in input channel input and channel output, which by defualt are 3 because
         we work with RGB images, but you can use 1 for BW
@@ -40,6 +46,18 @@ class UNet(nn.Module):
         self.up3 = Up(self.image_size * 2, self.image_size)
         self.sa6 = SelfAttention(self.image_size, self.image_size)
         self.outc = nn.Conv2d(self.image_size, c_out, kernel_size=1)  # projecting back to the output channel dimensions
+
+        # Attention
+        if not attention:
+            self.sa1 = nn.Identity()
+            self.sa2 = nn.Identity()
+            self.sa3 = nn.Identity()
+            self.sa4 = nn.Identity()
+            self.sa5 = nn.Identity()
+            self.sa6 = nn.Identity()
+
+        # Activation
+        self.activation = activation_functions[activation]()
 
 
     def pos_encoding(self, t, channels):
@@ -83,7 +101,16 @@ class UNet(nn.Module):
         x = self.up3(x, x1, t)
         x = self.sa6(x)
         output = self.outc(x)
+        output = self.activation(output)
         return output
+
+
+class IdentityLayer(nn.Module):
+    def __init__(self):
+        super(IdentityLayer, self).__init__()
+
+    def forward(self, x):
+        return x
 
 
 class SelfAttention(nn.Module):
