@@ -227,7 +227,7 @@ class Up(nn.Module):
 
 
 class UNet_conditional(nn.Module):
-    def __init__(self, c_in=1, c_out=1, time_dim=256, num_classes=None, device='cuda', image_size=64):
+    def __init__(self, c_in=1, c_out=1, time_dim=256, num_classes=None, device='cuda', image_size=64, attention_down = True, attention_up = True, activation = None):
         """
         It takes in input channel input and channel output, which by default are 3 because
         we work with RGB images, but you can use 1 for BW
@@ -267,6 +267,20 @@ class UNet_conditional(nn.Module):
 
         if num_classes is not None:
             self.label_emb = nn.Embedding(num_classes, time_dim)
+
+        # Attention
+        if not attention_down:
+            self.sa1 = IdentityLayer()
+            self.sa2 = IdentityLayer()
+            self.sa3 = IdentityLayer()
+        if not attention_up:
+            self.sa4 = IdentityLayer()
+            self.sa5 = IdentityLayer()
+            self.sa6 = IdentityLayer()
+
+        # Activation
+        self.activation = activation_functions[activation]()
+
 
     def pos_encoding(self, t, channels):
         """
