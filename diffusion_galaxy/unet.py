@@ -10,7 +10,7 @@ activation_functions = {
 }
 
 class UNet(nn.Module):
-    def __init__(self, c_in=1, c_out=1, time_dim=256, device='cuda', image_size=64, attention=True, activation=None):
+    def __init__(self, c_in=1, c_out=1, time_dim=256, device='cuda', image_size=64, attention_down=True, attention_up=True, activation=None):
         """
         It takes in input channel input and channel output, which by defualt are 3 because
         we work with RGB images, but you can use 1 for BW
@@ -48,10 +48,11 @@ class UNet(nn.Module):
         self.outc = nn.Conv2d(self.image_size, c_out, kernel_size=1)  # projecting back to the output channel dimensions
 
         # Attention
-        if not attention:
+        if not attention_down:
             self.sa1 = nn.Identity()
             self.sa2 = nn.Identity()
             self.sa3 = nn.Identity()
+        if not attention_up:
             self.sa4 = nn.Identity()
             self.sa5 = nn.Identity()
             self.sa6 = nn.Identity()
