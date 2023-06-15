@@ -2,11 +2,18 @@ import torch
 import torch.nn as nn
 from torch.nn import functional as F
 
+class IdentityLayer(nn.Module):
+    def __init__(self):
+        super(IdentityLayer, self).__init__()
+
+    def forward(self, x):
+        return x
+
 
 activation_functions = {
     'tanh': nn.Tanh,
     'sigmoid': nn.Sigmoid,
-    None: Identity,
+    None: IdentityLayer,
 }
 
 class UNet(nn.Module):
@@ -105,13 +112,6 @@ class UNet(nn.Module):
         output = self.activation(output)
         return output
 
-
-class IdentityLayer(nn.Module):
-    def __init__(self):
-        super(IdentityLayer, self).__init__()
-
-    def forward(self, x):
-        return x
 
 
 class SelfAttention(nn.Module):
