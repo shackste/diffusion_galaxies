@@ -49,13 +49,13 @@ class UNet(nn.Module):
 
         # Attention
         if not attention_down:
-            self.sa1 = nn.Identity()
-            self.sa2 = nn.Identity()
-            self.sa3 = nn.Identity()
+            self.sa1 = IdentityLayer()
+            self.sa2 = IdentityLayer()
+            self.sa3 = IdentityLayer()
         if not attention_up:
-            self.sa4 = nn.Identity()
-            self.sa5 = nn.Identity()
-            self.sa6 = nn.Identity()
+            self.sa4 = IdentityLayer()
+            self.sa5 = IdentityLayer()
+            self.sa6 = IdentityLayer()
 
         # Activation
         self.activation = activation_functions[activation]()
